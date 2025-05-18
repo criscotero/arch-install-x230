@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-REPO_URL="https://github.com/criscotero/arch-install-x230.git"
+REPO_URL="https://github.com/username/arch-install-x230.git"
 CLONE_DIR="arch-install-x230"
 
 echo "[*] Verificando que 'git' esté instalado..."
