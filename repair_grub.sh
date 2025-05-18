@@ -28,4 +28,4 @@ echo "[*] Limpieza final..."
 swapoff -a
 umount -R /mnt
 
-echo "[✅] Listo. Puedes reiniciar ahora y Arch debería arrancar correctamente."
+echo "Listo. Puedes reiniciar ahora y Arch debería arrancar correctamente."
