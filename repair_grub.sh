@@ -1,17 +1,16 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# echo "[*] Montando sistema para reparación de UEFI..."
-# mount /dev/sdb3 /mnt
-# mount /dev/sdb1 /mnt/boot
-# mount /dev/sdb4 /mnt/home
-# swapon /dev/sdb2
+# (Asegúrate de haber montado ya /dev/sdb3 en /mnt, /dev/sdb1 en /mnt/boot y haber activado swap)
 
 echo "[*] Entrando a chroot para reparar entradas de arranque..."
 arch-chroot /mnt /bin/bash <<'EOF'
 set -euo pipefail
+
 echo "[*] Limpiando entradas antiguas UEFI como 'ubuntu'..."
-for entry in $(efibootmgr | grep -i ubuntu | awk '{print $1}' | sed 's/Boot//;s/\\*//'); do
+# Extrae BootXXXX sin prefijo y sin asterisco
+for entry in $(efibootmgr | grep -i ubuntu | awk '{print $1}' | sed 's/Boot//;s/\*//'); do
+  echo "  -> Borrando Boot${entry}"
   efibootmgr -b "$entry" -B
 done
 
@@ -22,6 +21,7 @@ grub-mkconfig -o /boot/grub/grub.cfg
 echo "[*] Creando fallback loader en EFI/BOOT/BOOTX64.EFI..."
 mkdir -p /boot/EFI/BOOT
 cp /boot/EFI/GRUB/grubx64.efi /boot/EFI/BOOT/BOOTX64.EFI
+
 EOF
 
 echo "[*] Limpieza final..."
