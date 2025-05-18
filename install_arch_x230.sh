@@ -33,8 +33,8 @@ pacstrap /mnt base linux linux-firmware networkmanager sudo vim nano
 echo "[*] Generando fstab..."
 genfstab -U /mnt >> /mnt/etc/fstab
 
-echo "[*] Copiando este script al nuevo sistema para ejecutar en chroot..."
-cp "$0" /mnt/root/install_arch_post.sh
+echo "[*] Copiando script post-instalación al sistema..."
+cp install_arch_post.sh /mnt/root/
 chmod +x /mnt/root/install_arch_post.sh
 
 echo "[*] Entrando a chroot..."
