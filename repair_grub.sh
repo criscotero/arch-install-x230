@@ -1,17 +1,17 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-echo "[*] Montando sistema para reparación de UEFI..."
-mount /dev/sdb3 /mnt
-mount /dev/sdb1 /mnt/boot
-mount /dev/sdb4 /mnt/home
-swapon /dev/sdb2
+# echo "[*] Montando sistema para reparación de UEFI..."
+# mount /dev/sdb3 /mnt
+# mount /dev/sdb1 /mnt/boot
+# mount /dev/sdb4 /mnt/home
+# swapon /dev/sdb2
 
 echo "[*] Entrando a chroot para reparar entradas de arranque..."
 arch-chroot /mnt /bin/bash <<'EOF'
 set -euo pipefail
 echo "[*] Limpiando entradas antiguas UEFI como 'ubuntu'..."
-for entry in $(efibootmgr | grep -i ubuntu | awk '{print $1}' | cut -c5-); do
+for entry in $(efibootmgr | grep -i ubuntu | awk '{print $1}' | sed 's/Boot//;s/\\*//'); do
   efibootmgr -b "$entry" -B
 done
 
